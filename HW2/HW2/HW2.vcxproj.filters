@@ -13,39 +13,57 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\0.Game">
+      <UniqueIdentifier>{37a32142-cdb2-42c9-be1e-fe19b8dee2f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\0.Game">
+      <UniqueIdentifier>{dd74bfaf-6add-4295-98c4-3760f6680d12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\1.Object">
+      <UniqueIdentifier>{3cb6ec2f-2a86-4f01-beae-c1e33d8ed696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\1.Object">
+      <UniqueIdentifier>{772fdc30-b372-4a17-bd90-3903c73b558e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MyHeader.h">
-      <Filter>헤더 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawFunc.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Camera.cpp">
+      <Filter>소스 파일\0.Game</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\0.Game</Filter>
     </ClCompile>
     <ClCompile Include="Robot.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\1.Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>소스 파일\1.Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawFunc.cpp">
+      <Filter>소스 파일\0.Game</Filter>
+    </ClCompile>
+    <ClCompile Include="MyHeader.h">
+      <Filter>헤더 파일\0.Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Weather.cpp">
+      <Filter>소스 파일\1.Object</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일\0.Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Robot.h">
+      <Filter>헤더 파일\1.Object</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\1.Object</Filter>
     </ClInclude>
-    <ClInclude Include="Robot.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Weather.h">
+      <Filter>헤더 파일\1.Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>헤더 파일\0.Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

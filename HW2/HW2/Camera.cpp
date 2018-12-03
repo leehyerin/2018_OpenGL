@@ -1,20 +1,36 @@
 #include "Camera.h"
 #include <GL/freeglut.h>
 
-void Camera::ToggleView()
+void Camera::ToggleOrtho() 
 {
-	switch (m_view) 
+	m_isPerspective = !m_isPerspective;
+
+	if (m_isPerspective) m_Zoom = -250;
+	else m_Zoom = 0;
+}
+
+void Camera::ToggleView(bool isStart)
+{
+	if (!isStart)
 	{
-	case TOPVIEW: 
-		m_view = SIDEVIEW;
-		break;
-	case SIDEVIEW:
-		m_view = QUARTERVIEW;
-		break;
-	case QUARTERVIEW:
-		m_view = TOPVIEW;
-		break;
+		switch (m_view)
+		{
+		case TOPVIEW:
+			m_view = SIDEVIEW;
+			break;
+		case SIDEVIEW:
+			m_view = QUARTERVIEW;
+			break;
+		case QUARTERVIEW:
+			m_view = TOPVIEW;
+			break;
+		}
 	}
+	else
+	{
+		m_view = QUARTERVIEW; ToggleOrtho();
+	}
+
 
 	ViewChange();
 }
@@ -24,22 +40,34 @@ void Camera::ViewChange()
 	switch (m_view)
 	{
 	case TOPVIEW:
-		Axis.x = 90; Axis.y = 0; Axis.z = 0;
+		m_Axis.x = 90; m_Axis.y = 0; m_Axis.z = 0;
 		break;
 	case SIDEVIEW:
-		Axis.x = 0; Axis.y = 0; Axis.z = 0;
+		m_Axis.x = 0; m_Axis.y = 0; m_Axis.z = 0;
 		break;
 	case QUARTERVIEW:
-		Axis.x = 45; Axis.y = 30; Axis.z = 0;
+		m_Axis.x = 45; m_Axis.y = 30; m_Axis.z = 0;
 		break;
 	}
 }
 
 void Camera::AxisModulate(double x, double y, double z)
 {
-	Axis.x += x;
-	Axis.y += y;
-	Axis.z += z;
+	m_Axis.x += x;
+	m_Axis.y += y;
+	m_Axis.z += z;
+}
+//
+//void Camera::PosModulate(double x, double y)
+//{
+//	m_Pos.x += x;
+//	m_Pos.y += y;
+//}
+
+void Camera::ZoomModulate(double z)
+{
+	if (m_isPerspective)
+		m_Zoom += z;
 }
 
 void Camera::Reset()
@@ -51,9 +79,12 @@ void Camera::Reset()
 		glOrtho(-WINDOW_WIDTH_HALF, WINDOW_WIDTH_HALF,
 			-WINDOW_HEIGHT_HALF, WINDOW_HEIGHT_HALF, -400.0, 400.0);
 	else
-		gluPerspective(60, 1, -1, 1000); //잘 안되는군..
+	{
+		gluPerspective(60, WINDOW_WIDTH_HALF / WINDOW_HEIGHT_HALF, 1.0, 1000.0);
+	}
+	glTranslated(0, 0, m_Zoom);
 
-	glRotated(Axis.x, 1, 0, 0);
-	glRotated(Axis.y, 0, 1, 0);
-	glRotated(Axis.z, 0, 0, 1);
+	glRotated(m_Axis.x, 1, 0, 0);
+	glRotated(m_Axis.y, 0, 1, 0);
+	glRotated(m_Axis.z, 0, 0, 1);
 }

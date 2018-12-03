@@ -3,42 +3,46 @@
 #include "Camera.h"
 #include "Vertex.h"
 #include "Robot.h"
+#include "Weather.h"
 
 GLvoid Reshape(int, int);
 GLvoid drawScene(GLvoid);
 
 void DefaultTimer(int);
-void SpecialTimer(int);
-void SnowTimer(int);
+void CollisionTimer(int);
 //-----------------------------
 void SetupRC();
 
 vector<MyVec> vTree;
 Camera cCamera;
 Vertex cVertex;
-Robot cRobot;
-vector<MyVec> vSnow;
+Robot cRobot1(-10, 10, 0);
+Robot cRobot2(0, 10,20);
+Weather cWeather;
 
 bool bMouseFlag;
-bool m_bSnow=true;
 
 int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(WINDOW_WIDTH_HALF * 2, WINDOW_HEIGHT_HALF * 2);
 	glutCreateWindow("HW2");
 
 	SetupRC();
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(Keyboard);
+	glutSpecialFunc(SpecialKeyboard);
 	glutMouseFunc(Mouse);
 	glutMotionFunc(MouseMotion);
 
 	glutTimerFunc(100, DefaultTimer, 1);
-	//glutTimerFunc(100, SpecialTimer, 2);
-	//glutTimerFunc(200, SnowTimer, 3);
+	glutTimerFunc(100, CollisionTimer, 2);
 
 	glutReshapeFunc(Reshape);
 	glutMainLoop();
@@ -49,13 +53,23 @@ GLvoid drawScene(GLvoid)
 	glClearColor(0, 0, 0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//	DrawFloor();
+	
+	DrawFloor();
 	DrawAxis();
-//	cVertex.DrawVertices();
-//	DrawTrees();
-	cRobot.Draw();
+	DrawTrees();
+	cVertex.DrawVertices();
+	cVertex.DrawSpline();
 
-	glFlush(); 
+	cRobot1.Draw();
+	BLUE;
+	cRobot1.DrawBeige();
+	cRobot2.Draw();
+	RED;
+	cRobot2.DrawBeige();
+
+	cWeather.Draw();
+
+	glutSwapBuffers();
 }
 
 GLvoid Reshape(int w, int h)
@@ -71,58 +85,32 @@ void SetupRC()
 	while (n > 0)
 	{
 		vTree.push_back(MyVec{
-			(double)(rand() % 200 - 100),10,
-			(double)(rand() % 200 - 100) });
+			(double)(rand() % 400 - 200), 10,
+			(double)(rand() % 400 - 200) });
 		--n;
 	}
 }
 
 void DefaultTimer(int value)
 {
-	cCamera.Reset();
+	cCamera.Reset();	
+	
+	cRobot1.Move();
+	cRobot1.ParticleProcess();
+	cRobot2.Move();
+	if (CheckColl(cRobot1.GetterPosX(), cRobot1.GetterPosZ(), cRobot2.GetterPosX(), cRobot2.GetterPosZ()))
+		cRobot2.ChangeToDestDir(cRobot1.GetterDir());
+	cWeather.Falling();
 
 
-	//-----------------클래스로 정리할 것---------------
-	bool col=false;
-	int idx = 0;
-	if (m_bSnow)
-	{
-		for (int i = 0; i < vSnow.size(); ++i)
-		{
-			if (vSnow[i].y > 0)
-			{
-				vSnow[i].y -= 0.5;
-			}
-			else
-			{
-				if (col) idx = i;
-			}
-		}
-
-		if (col)
-		{
-			vSnow.erase(vSnow.begin() + idx); 
-		}
-	}
 	//----------------------------------
 	glutPostRedisplay(); 
 	glutTimerFunc(100, DefaultTimer, 1); 
 }
 
-void SpecialTimer(int value)
+void CollisionTimer(int value)
 {
-	cRobot.ParticleProcess();
-
 	glutPostRedisplay();
-	glutTimerFunc(100, SnowTimer, 2);
+	glutTimerFunc(200, CollisionTimer, 2);
 }
 
-void SnowTimer(int value)
-{
-	double x = rand() % 40 - 20;
-	double z = rand() % 40 - 20;
-	vSnow.push_back(MyVec{ x,10.0,z });
-
-	glutPostRedisplay(); 
-	glutTimerFunc(200, SnowTimer, 3); 
-}

@@ -3,14 +3,20 @@
 
 class Camera
 {
-public:
-	View m_view{ TOPVIEW };
-	MyVec Axis{ 90,0,0 };
+	//MyVec m_Pos;
+	MyVec m_Axis{ 90,0,0 };
 	bool m_isPerspective{ false };
-
-	inline void ToggleOrtho() { m_isPerspective = !m_isPerspective; }
-	void ToggleView();
+	double m_Zoom{-10};
+	View m_view{ TOPVIEW };
+	bool m_isFreeView;
+public:
+	View GetView() {	return m_view;	}
+	void ToggleOrtho();
+	void ToggleView(bool isStart);
+	void ToggleFreeView() { m_isFreeView=!m_isFreeView; }
 	void ViewChange();
 	void AxisModulate(double x, double y, double z);
+	//void PosModulate(double x, double y);
+	void ZoomModulate(double z);
 	void Reset();
 };

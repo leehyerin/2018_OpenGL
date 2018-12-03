@@ -118,6 +118,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DrawFunc.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Weather.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyHeader.h" />
     <ClCompile Include="Robot.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="Weather.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
